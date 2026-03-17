@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "sourceMap": true,
     "strict": true,
@@ -9,5 +10,6 @@
     "rootDir": "../",
     "noEmitOnError": true,
     "typeRoots": ["node_modules/@types", "./types"]
-  }
+  },
+  "exclude": ["preload"]
 }

@@ -1,66 +1,94 @@
-// src/services/electron.service.ts
-// Service for communicating with Electron main process via IPC
-
 /**
- * Electron API exposed to renderer
+ * Service to interact with Electron main process via IPC
  */
-interface ElectronAPI {
-  getAppVersion: () => Promise<string>;
-  getPlatform: () => Promise<string>;
-  // Add more IPC handlers here as needed
+export interface BoilerplateItem {
+  id: string;
+  label: string;
+  value: string;
+  description?: string;
+  timestamp: number;
 }
 
-/**
- * Get the Electron API (works in both Electron and browser)
- */
-function getElectronAPI(): ElectronAPI | null {
-  if (typeof window !== 'undefined' && window.electronAPI) {
-    return window.electronAPI;
-  }
-  return null;
+export interface AppSettings {
+  theme: 'light' | 'dark' | 'system';
+  notifications: boolean;
+  [key: string]: any;
 }
 
-/**
- * Electron service for IPC communication
- */
 export const electronService = {
   /**
-   * Get the app version from Electron
+   * Get the version of the application
    */
-  async getAppVersion(): Promise<string> {
-    const api = getElectronAPI();
-    if (api) {
-      return api.getAppVersion();
+  getAppVersion: async (): Promise<string> => {
+    if (window.electronAPI) {
+      return await window.electronAPI.getAppVersion();
     }
-    // Fallback for browser dev
-    return '1.0.0-browser';
+    return '1.0.0 (Web)';
   },
 
   /**
-   * Get the platform (darwin, win32, linux)
+   * Get the current platform
    */
-  async getPlatform(): Promise<string> {
-    const api = getElectronAPI();
-    if (api) {
-      return api.getPlatform();
+  getPlatform: async (): Promise<string> => {
+    if (window.electronAPI) {
+      return await window.electronAPI.getPlatform();
     }
-    // Fallback for browser dev
-    return 'browser';
+    return 'web';
   },
 
   /**
-   * Check if running in Electron
+   * Check if running in Electron environment
    */
-  isElectron(): boolean {
-    return getElectronAPI() !== null;
+  isElectron: (): boolean => {
+    return !!window.electronAPI;
   },
-};
 
-export default electronService;
+  /**
+   * Get generic items from store
+   */
+  getItems: async (): Promise<BoilerplateItem[]> => {
+    if (window.electronAPI) {
+      return await window.electronAPI.getItems();
+    }
+    return [];
+  },
 
-// Type declaration for window.electronAPI
-declare global {
-  interface Window {
-    electronAPI?: ElectronAPI;
+  /**
+   * Update items in store
+   */
+  updateItems: async (items: BoilerplateItem[]): Promise<{ success: boolean }> => {
+    if (window.electronAPI) {
+      return await window.electronAPI.updateItems(items);
+    }
+    return { success: false };
+  },
+
+  /**
+   * Get app settings
+   */
+  getSettings: async (): Promise<AppSettings> => {
+    if (window.electronAPI) {
+      return await window.electronAPI.getSettings();
+    }
+    return { theme: 'system', notifications: true };
+  },
+
+  /**
+   * Update app settings
+   */
+  updateSettings: async (settings: Partial<AppSettings>): Promise<{ success: boolean }> => {
+    if (window.electronAPI) {
+      return await window.electronAPI.updateSettings(settings);
+    }
+    return { success: false };
+  },
+
+  /**
+   * Re-toggle the window
+   */
+  reToggleWindow: () => {
+    if (window.electronAPI) {
+      window.electronAPI.reToggleWindow();
+    }
   }
-}
+};

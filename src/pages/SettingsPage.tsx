@@ -1,205 +1,106 @@
-// src/pages/SettingsPage.tsx
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Toggle } from '@/components/ui/Toggle';
 import { Select } from '@/components/ui/Select';
-import { Slider } from '@/components/ui/Slider';
-import { RadioGroup } from '@/components/ui/RadioGroup';
-import { Checkbox } from '@/components/ui/Checkbox';
-import useLocalStorage from '@/hooks/useLocalStorage';
-import { electronService } from '@/services/electron.service';
+import { electronService, AppSettings } from '@/services/electron.service';
+import { Settings as SettingsIcon, Monitor, Bell, Info } from 'lucide-react';
 
-/**
- * Settings page with common app settings
- */
 export const SettingsPage: React.FC = () => {
-  const [appName, setAppName] = useLocalStorage('settings-app-name', 'My App');
-  const [darkMode, setDarkMode] = useLocalStorage('settings-dark-mode', false);
-  const [notifications, setNotifications] = useLocalStorage('settings-notifications', true);
-  const [autoSave, setAutoSave] = useLocalStorage('settings-auto-save', true);
-  const [language, setLanguage] = useLocalStorage('settings-language', 'en');
-  const [volume, setVolume] = useLocalStorage('settings-volume', 75);
-  const [compactMode, setCompactMode] = useLocalStorage('settings-compact-mode', false);
-  const [showTrayIcon, setShowTrayIcon] = useLocalStorage('settings-show-tray', true);
-  const [startMinimized, setStartMinimized] = useLocalStorage('settings-start-minimized', false);
+  const [settings, setSettings] = React.useState<AppSettings>({
+    theme: 'system',
+    notifications: true
+  });
   const [appVersion, setAppVersion] = React.useState('1.0.0');
   const [platform, setPlatform] = React.useState<string>('');
 
   React.useEffect(() => {
-    // Get app info from Electron
+    // Get app info
     electronService.getAppVersion().then(setAppVersion);
     electronService.getPlatform().then(setPlatform);
+    electronService.getSettings().then(setSettings);
   }, []);
 
-  const handleSave = () => {
-    // Save settings logic here
-    console.log('Settings saved:', { appName, darkMode, notifications, autoSave, language, volume });
+  const handleUpdateSetting = async (key: string, value: any) => {
+    const updated = { ...settings, [key]: value };
+    setSettings(updated);
+    await electronService.updateSettings(updated);
   };
 
-  const handleReset = () => {
-    setAppName('My App');
-    setDarkMode(false);
-    setNotifications(true);
-    setAutoSave(true);
-    setLanguage('en');
-    setVolume(75);
-    setCompactMode(false);
-    setShowTrayIcon(true);
-    setStartMinimized(false);
-  };
-
-  const languageOptions = [
-    { label: 'English', value: 'en' },
-    { label: 'Spanish', value: 'es' },
-    { label: 'French', value: 'fr' },
-    { label: 'German', value: 'de' },
-    { label: 'Japanese', value: 'ja' },
-    { label: 'Chinese', value: 'zh' },
+  const themeOptions = [
+    { label: 'System', value: 'system' },
+    { label: 'Light', value: 'light' },
+    { label: 'Dark', value: 'dark' },
   ];
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+    <div className="flex flex-col h-full bg-background/30 p-4 space-y-4 max-w-lg mx-auto overflow-y-auto custom-scrollbar">
+      <div className="flex items-center gap-2 mb-2 p-1">
+        <SettingsIcon className="w-5 h-5 text-primary" />
+        <h2 className="text-lg font-bold">App Settings</h2>
+      </div>
 
-      {/* General Settings */}
-      <Card>
-        <CardHeader>
-          <CardTitle>General</CardTitle>
-          <CardDescription>Configure general application settings</CardDescription>
+      <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Monitor className="w-4 h-4 text-blue-500" />
+            Appearance
+          </CardTitle>
+          <CardDescription className="text-xs">Customize the look and feel</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Input
-            label="Application Name"
-            value={appName}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAppName(e.target.value)}
-            placeholder="Enter app name"
-          />
           <Select
-            label="Language"
-            options={languageOptions}
-            value={language}
-            onChange={setLanguage}
-            placeholder="Select language"
-          />
-          <Toggle
-            label="Dark Mode"
-            description="Enable dark theme for the application"
-            checked={darkMode}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDarkMode(e.target.checked)}
-          />
-          <Toggle
-            label="Compact Mode"
-            description="Use compact UI layout"
-            checked={compactMode}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCompactMode(e.target.checked)}
+            label="Theme"
+            options={themeOptions}
+            value={settings.theme}
+            onChange={(val) => handleUpdateSetting('theme', val)}
           />
         </CardContent>
       </Card>
 
-      {/* Audio Settings */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Audio</CardTitle>
-          <CardDescription>Configure audio and notification sounds</CardDescription>
+      <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Bell className="w-4 h-4 text-orange-500" />
+            Notifications
+          </CardTitle>
+          <CardDescription className="text-xs">Manage system alerts</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <Slider
-            label="Volume"
-            min={0}
-            max={100}
-            value={volume}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVolume(Number(e.target.value))}
-            minLabel="Mute"
-            maxLabel="Max"
-            valueDisplay={(val: number) => `${val}%`}
-          />
+        <CardContent>
           <Toggle
             label="Enable Notifications"
-            description="Receive notifications for important updates"
-            checked={notifications}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNotifications(e.target.checked)}
+            description="Receive system-level notifications"
+            checked={settings.notifications}
+            onChange={(e) => handleUpdateSetting('notifications', e.target.checked)}
           />
         </CardContent>
       </Card>
 
-      {/* Data & Storage */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Data & Storage</CardTitle>
-          <CardDescription>Configure data storage options</CardDescription>
+      <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Info className="w-4 h-4 text-primary" />
+            About
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <Toggle
-            label="Auto-save"
-            description="Automatically save changes"
-            checked={autoSave}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAutoSave(e.target.checked)}
-          />
-          <RadioGroup
-            label="Auto-save Interval"
-            name="auto-save-interval"
-            options={[
-              { label: 'Every 30 seconds', value: '30' },
-              { label: 'Every minute', value: '60' },
-              { label: 'Every 5 minutes', value: '300' },
-              { label: 'Every 10 minutes', value: '600' },
-            ]}
-            value="60"
-            onChange={(val: string) => console.log('Auto-save interval:', val)}
-            orientation="horizontal"
-          />
-        </CardContent>
-      </Card>
-
-      {/* System Settings */}
-      <Card>
-        <CardHeader>
-          <CardTitle>System</CardTitle>
-          <CardDescription>Configure system integration options</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Checkbox
-            label="Show in system tray"
-            description="Keep app running in background when closed"
-            checked={showTrayIcon}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setShowTrayIcon(e.target.checked)}
-          />
-          <Checkbox
-            label="Start minimized"
-            description="Start app minimized to system tray"
-            checked={startMinimized}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartMinimized(e.target.checked)}
-          />
-        </CardContent>
-      </Card>
-
-      {/* About */}
-      <Card>
-        <CardHeader>
-          <CardTitle>About</CardTitle>
-          <CardDescription>Application information</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Version</span>
-            <span className="font-medium">{appVersion}</span>
+        <CardContent className="space-y-2 py-4">
+          <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground font-medium">Version</span>
+            <span className="font-bold">{appVersion}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Platform</span>
-            <span className="font-medium">{platform || 'Web (Dev Mode)'}</span>
+          <div className="flex justify-between text-xs pt-1 border-t border-border/50">
+            <span className="text-muted-foreground font-medium">Platform</span>
+            <span className="font-bold uppercase">{platform || 'Web (Dev Mode)'}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Electron</span>
-            <span className="font-medium">{electronService.isElectron() ? 'Yes' : 'No'}</span>
+          <div className="flex justify-between text-xs pt-1 border-t border-border/50">
+            <span className="text-muted-foreground font-medium">Electron Environment</span>
+            <span className="font-bold text-primary">{electronService.isElectron() ? 'YES' : 'NO'}</span>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end space-x-3">
-          <Button variant="outline" onClick={handleReset}>
-            Reset to Defaults
-          </Button>
-          <Button onClick={handleSave}>Save Changes</Button>
+        <CardFooter className="pt-2">
+           <p className="text-[10px] text-center w-full text-muted-foreground">
+             © 2026 Electron Menubar Boilerplate
+           </p>
         </CardFooter>
       </Card>
     </div>
