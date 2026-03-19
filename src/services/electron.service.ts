@@ -12,7 +12,7 @@ export interface BoilerplateItem {
 export interface AppSettings {
   theme: 'light' | 'dark' | 'system';
   notifications: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const electronService = {
@@ -48,7 +48,7 @@ export const electronService = {
    */
   getItems: async (): Promise<BoilerplateItem[]> => {
     if (window.electronAPI) {
-      return await window.electronAPI.getItems();
+      return await window.electronAPI.getItems() as BoilerplateItem[];
     }
     return [];
   },
@@ -58,7 +58,7 @@ export const electronService = {
    */
   updateItems: async (items: BoilerplateItem[]): Promise<{ success: boolean }> => {
     if (window.electronAPI) {
-      return await window.electronAPI.updateItems(items);
+      return await window.electronAPI.updateItems(items as unknown[]);
     }
     return { success: false };
   },
@@ -68,7 +68,7 @@ export const electronService = {
    */
   getSettings: async (): Promise<AppSettings> => {
     if (window.electronAPI) {
-      return await window.electronAPI.getSettings();
+      return await window.electronAPI.getSettings() as AppSettings;
     }
     return { theme: 'system', notifications: true };
   },

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage } from 'electron';
+import { app, BrowserWindow, ipcMain, Tray, nativeImage } from 'electron';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { AppService } from './app-service.js';

@@ -23,7 +23,7 @@ jobs:
 
       - name: Lint
         run: |
-          npm lint
+          npm run lint
         working-directory: .
 
       - name: Build Electron App

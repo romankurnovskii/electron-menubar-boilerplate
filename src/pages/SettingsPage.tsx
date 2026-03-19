@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { Toggle } from '@/components/ui/Toggle';
 import { Select } from '@/components/ui/Select';
 import { electronService, AppSettings } from '@/services/electron.service';
@@ -21,7 +20,7 @@ export const SettingsPage: React.FC = () => {
     electronService.getSettings().then(setSettings);
   }, []);
 
-  const handleUpdateSetting = async (key: string, value: any) => {
+  const handleUpdateSetting = async (key: string, value: unknown) => {
     const updated = { ...settings, [key]: value };
     setSettings(updated);
     await electronService.updateSettings(updated);
