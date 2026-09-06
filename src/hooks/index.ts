@@ -13,6 +13,6 @@
 // export { useLocalStorage } from './useLocalStorage';
 // export { useDebounce } from './useDebounce';
 
+export { default as useDebounce } from './useDebounce'
 // Re-export common hooks
-export { default as useLocalStorage } from './useLocalStorage';
-export { default as useDebounce } from './useDebounce';
+export { default as useLocalStorage } from './useLocalStorage'

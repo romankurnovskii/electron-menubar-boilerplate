@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
 
-yarn lint-staged
+npx lint-staged
+npx vitest run

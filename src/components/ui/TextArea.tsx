@@ -1,11 +1,11 @@
 // src/components/ui/TextArea.tsx
-import React from 'react';
-import { cn } from '@/utils/helpers';
+import React from 'react'
+import { cn } from '@/utils/helpers'
 
 export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
+  label?: string
+  error?: string
+  helperText?: string
 }
 
 /**
@@ -13,7 +13,7 @@ export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextArea
  */
 export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ className, label, error, helperText, id, ...props }, ref) => {
-    const textareaId = id || label?.toLowerCase().replace(/\s+/g, '-');
+    const textareaId = id || label?.toLowerCase().replace(/\s+/g, '-')
 
     return (
       <div className="w-full">
@@ -31,17 +31,17 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
               ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
               : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200',
             props.disabled && 'bg-gray-100 cursor-not-allowed',
-            className
+            className,
           )}
           {...props}
         />
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
         {helperText && !error && <p className="mt-1 text-sm text-gray-500">{helperText}</p>}
       </div>
-    );
-  }
-);
+    )
+  },
+)
 
-TextArea.displayName = 'TextArea';
+TextArea.displayName = 'TextArea'
 
-export default TextArea;
+export default TextArea

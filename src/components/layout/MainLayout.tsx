@@ -1,19 +1,19 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Settings, Home, Bell } from 'lucide-react';
-import { cn } from '@/utils/helpers';
+import { Bell, Home, Settings } from 'lucide-react'
+import type React from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { cn } from '@/utils/helpers'
 
 interface MainLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const location = useLocation();
+  const location = useLocation()
 
   const navigation = [
     { name: 'Dashboard', href: '/', icon: Home },
     { name: 'Settings', href: '/settings', icon: Settings },
-  ];
+  ]
 
   return (
     <div className="flex flex-col h-screen bg-background overflow-hidden text-foreground">
@@ -25,37 +25,38 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           </div>
           <span className="font-bold text-lg tracking-tight">Menubar App</span>
         </div>
-        
+
         <nav className="flex items-center gap-1">
           {navigation.map((item) => {
-            const isActive = location.pathname === item.href;
+            const isActive = location.pathname === item.href
             return (
               <Link
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "p-2 rounded-lg transition-all duration-200",
-                  isActive 
-                    ? "bg-accent text-accent-foreground" 
-                    : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                  'p-2 rounded-lg transition-all duration-200',
+                  isActive
+                    ? 'bg-accent text-accent-foreground'
+                    : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
                 )}
                 title={item.name}
               >
                 <item.icon size={20} />
               </Link>
-            );
+            )
           })}
         </nav>
       </header>
 
       {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar bg-background/50">
-        <div className="w-full h-full">
-          {children}
-        </div>
+        <div className="w-full h-full">{children}</div>
       </main>
-      
-      <style dangerouslySetInnerHTML={{ __html: `
+
+      <style
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: static CSS for scrollbar styling, no user input
+        dangerouslySetInnerHTML={{
+          __html: `
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
@@ -69,9 +70,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: rgba(128, 128, 128, 0.3);
         }
-      `}} />
+      `,
+        }}
+      />
     </div>
-  );
-};
+  )
+}
 
-export default MainLayout;
+export default MainLayout

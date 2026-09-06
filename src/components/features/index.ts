@@ -15,4 +15,4 @@
 // Placeholder - add your feature component exports here
 export const FEATURE_COMPONENTS = {
   // Add your feature component exports here
-} as const;
+} as const

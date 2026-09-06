@@ -1,7 +1,6 @@
-import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import MainLayout from '@/components/layout/MainLayout';
-import { SettingsPage, DashboardPage } from '@/pages';
+import { Route, HashRouter as Router, Routes } from 'react-router-dom'
+import MainLayout from '@/components/layout/MainLayout'
+import { DashboardPage, SettingsPage } from '@/pages'
 
 function App() {
   return (
@@ -14,7 +13,7 @@ function App() {
         </Routes>
       </MainLayout>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

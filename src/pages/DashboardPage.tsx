@@ -1,59 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { electronService, BoilerplateItem } from '@/services/electron.service';
-import { Trash2, Plus, RefreshCw, Box } from 'lucide-react';
+import { Box, Plus, RefreshCw, Trash2 } from 'lucide-react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { Button } from '@/components/ui/Button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Input } from '@/components/ui/Input'
+import { type BoilerplateItem, electronService } from '@/services/electron.service'
 
 export const DashboardPage: React.FC = () => {
-  const [items, setItems] = useState<BoilerplateItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showAddForm, setShowAddForm] = useState(false);
-  
+  const [items, setItems] = useState<BoilerplateItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [showAddForm, setShowAddForm] = useState(false)
+
   const [newItem, setNewItem] = useState<Partial<BoilerplateItem>>({
     label: '',
     value: '',
-    description: ''
-  });
+    description: '',
+  })
+
+  const loadItems = useCallback(async () => {
+    setLoading(true)
+    const data = await electronService.getItems()
+    setItems(data)
+    setLoading(false)
+  }, [])
 
   useEffect(() => {
-    loadItems();
-  }, []);
-
-  const loadItems = async () => {
-    setLoading(true);
-    const data = await electronService.getItems();
-    setItems(data);
-    setLoading(false);
-  };
+    loadItems()
+  }, [loadItems])
 
   const handleRemove = async (id: string) => {
-    const newList = items.filter(i => i.id !== id);
-    await electronService.updateItems(newList);
-    setItems(newList);
-  };
+    const newList = items.filter((i) => i.id !== id)
+    await electronService.updateItems(newList)
+    setItems(newList)
+  }
 
   const handleAdd = async () => {
-    if (!newItem.label || !newItem.value) return;
-    
+    if (!newItem.label || !newItem.value) return
+
     const item: BoilerplateItem = {
       id: Math.random().toString(36).substr(2, 9),
       label: newItem.label,
       value: newItem.value,
       description: newItem.description,
-      timestamp: Date.now()
-    };
-    
-    const newList = [...items, item];
-    await electronService.updateItems(newList);
-    setItems(newList);
-    setShowAddForm(false);
+      timestamp: Date.now(),
+    }
+
+    const newList = [...items, item]
+    await electronService.updateItems(newList)
+    setItems(newList)
+    setShowAddForm(false)
     setNewItem({
       label: '',
       value: '',
-      description: ''
-    });
-  };
+      description: '',
+    })
+  }
 
   return (
     <div className="flex flex-col h-full bg-background/30 p-4 space-y-4 max-w-lg mx-auto">
@@ -64,8 +65,8 @@ export const DashboardPage: React.FC = () => {
             <h2 className="text-lg font-bold text-foreground">Dashboard</h2>
             <p className="text-xs text-muted-foreground">{items.length} items stored</p>
           </div>
-          <Button 
-            size="sm" 
+          <Button
+            size="sm"
             className="rounded-full shadow-lg shadow-primary/20 hover:scale-105 transition-transform"
             onClick={() => setShowAddForm(true)}
           >
@@ -105,8 +106,12 @@ export const DashboardPage: React.FC = () => {
               placeholder="Short description..."
             />
             <div className="flex justify-end gap-2 pt-2 border-t border-border/50">
-              <Button variant="ghost" size="sm" onClick={() => setShowAddForm(false)}>Cancel</Button>
-              <Button size="sm" onClick={handleAdd}>Save</Button>
+              <Button variant="ghost" size="sm" onClick={() => setShowAddForm(false)}>
+                Cancel
+              </Button>
+              <Button size="sm" onClick={handleAdd}>
+                Save
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -125,9 +130,12 @@ export const DashboardPage: React.FC = () => {
             </div>
           </div>
         )}
-        
+
         {items.map((item) => (
-          <Card key={item.id} className="group hover:border-primary/50 transition-colors shadow-sm bg-card/40 backdrop-blur-[2px]">
+          <Card
+            key={item.id}
+            className="group hover:border-primary/50 transition-colors shadow-sm bg-card/40 backdrop-blur-[2px]"
+          >
             <CardContent className="p-3">
               <div className="flex justify-between items-start">
                 <div className="flex items-center gap-3">
@@ -142,22 +150,29 @@ export const DashboardPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-muted-foreground hover:bg-muted" onClick={loadItems}>
-                    <RefreshCw className={loading ? "w-3 h-3 animate-spin" : "w-3 h-3"} />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 text-muted-foreground hover:bg-muted"
+                    onClick={loadItems}
+                  >
+                    <RefreshCw className={loading ? 'w-3 h-3 animate-spin' : 'w-3 h-3'} />
                   </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10" 
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                     onClick={() => handleRemove(item.id)}
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
-              
+
               <div className="mt-2 text-[12px] bg-accent/30 p-2 rounded-lg border border-border/50">
-                <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-wider block mb-0.5">Stored Value</span>
+                <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-wider block mb-0.5">
+                  Stored Value
+                </span>
                 <span className="font-mono">{item.value}</span>
               </div>
             </CardContent>
@@ -165,7 +180,7 @@ export const DashboardPage: React.FC = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardPage;
+export default DashboardPage

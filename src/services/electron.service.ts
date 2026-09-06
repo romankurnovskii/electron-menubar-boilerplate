@@ -2,17 +2,17 @@
  * Service to interact with Electron main process via IPC
  */
 export interface BoilerplateItem {
-  id: string;
-  label: string;
-  value: string;
-  description?: string;
-  timestamp: number;
+  id: string
+  label: string
+  value: string
+  description?: string
+  timestamp: number
 }
 
 export interface AppSettings {
-  theme: 'light' | 'dark' | 'system';
-  notifications: boolean;
-  [key: string]: unknown;
+  theme: 'light' | 'dark' | 'system'
+  notifications: boolean
+  [key: string]: unknown
 }
 
 export const electronService = {
@@ -21,9 +21,9 @@ export const electronService = {
    */
   getAppVersion: async (): Promise<string> => {
     if (window.electronAPI) {
-      return await window.electronAPI.getAppVersion();
+      return await window.electronAPI.getAppVersion()
     }
-    return '1.0.0 (Web)';
+    return '1.0.0 (Web)'
   },
 
   /**
@@ -31,16 +31,16 @@ export const electronService = {
    */
   getPlatform: async (): Promise<string> => {
     if (window.electronAPI) {
-      return await window.electronAPI.getPlatform();
+      return await window.electronAPI.getPlatform()
     }
-    return 'web';
+    return 'web'
   },
 
   /**
    * Check if running in Electron environment
    */
   isElectron: (): boolean => {
-    return !!window.electronAPI;
+    return !!window.electronAPI
   },
 
   /**
@@ -48,9 +48,9 @@ export const electronService = {
    */
   getItems: async (): Promise<BoilerplateItem[]> => {
     if (window.electronAPI) {
-      return await window.electronAPI.getItems() as BoilerplateItem[];
+      return (await window.electronAPI.getItems()) as BoilerplateItem[]
     }
-    return [];
+    return []
   },
 
   /**
@@ -58,9 +58,9 @@ export const electronService = {
    */
   updateItems: async (items: BoilerplateItem[]): Promise<{ success: boolean }> => {
     if (window.electronAPI) {
-      return await window.electronAPI.updateItems(items as unknown[]);
+      return await window.electronAPI.updateItems(items as unknown[])
     }
-    return { success: false };
+    return { success: false }
   },
 
   /**
@@ -68,9 +68,9 @@ export const electronService = {
    */
   getSettings: async (): Promise<AppSettings> => {
     if (window.electronAPI) {
-      return await window.electronAPI.getSettings() as AppSettings;
+      return (await window.electronAPI.getSettings()) as AppSettings
     }
-    return { theme: 'system', notifications: true };
+    return { theme: 'system', notifications: true }
   },
 
   /**
@@ -78,9 +78,9 @@ export const electronService = {
    */
   updateSettings: async (settings: Partial<AppSettings>): Promise<{ success: boolean }> => {
     if (window.electronAPI) {
-      return await window.electronAPI.updateSettings(settings);
+      return await window.electronAPI.updateSettings(settings)
     }
-    return { success: false };
+    return { success: false }
   },
 
   /**
@@ -88,7 +88,7 @@ export const electronService = {
    */
   reToggleWindow: () => {
     if (window.electronAPI) {
-      window.electronAPI.reToggleWindow();
+      window.electronAPI.reToggleWindow()
     }
-  }
-};
+  },
+}

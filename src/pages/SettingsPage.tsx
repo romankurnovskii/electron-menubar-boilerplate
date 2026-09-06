@@ -1,36 +1,36 @@
-import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/Card';
-import { Toggle } from '@/components/ui/Toggle';
-import { Select } from '@/components/ui/Select';
-import { electronService, AppSettings } from '@/services/electron.service';
-import { Settings as SettingsIcon, Monitor, Bell, Info } from 'lucide-react';
+import { Bell, Info, Monitor, Settings as SettingsIcon } from 'lucide-react'
+import React from 'react'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Select } from '@/components/ui/Select'
+import { Toggle } from '@/components/ui/Toggle'
+import { type AppSettings, electronService } from '@/services/electron.service'
 
 export const SettingsPage: React.FC = () => {
   const [settings, setSettings] = React.useState<AppSettings>({
     theme: 'system',
-    notifications: true
-  });
-  const [appVersion, setAppVersion] = React.useState('1.0.0');
-  const [platform, setPlatform] = React.useState<string>('');
+    notifications: true,
+  })
+  const [appVersion, setAppVersion] = React.useState('1.0.0')
+  const [platform, setPlatform] = React.useState<string>('')
 
   React.useEffect(() => {
     // Get app info
-    electronService.getAppVersion().then(setAppVersion);
-    electronService.getPlatform().then(setPlatform);
-    electronService.getSettings().then(setSettings);
-  }, []);
+    electronService.getAppVersion().then(setAppVersion)
+    electronService.getPlatform().then(setPlatform)
+    electronService.getSettings().then(setSettings)
+  }, [])
 
   const handleUpdateSetting = async (key: string, value: unknown) => {
-    const updated = { ...settings, [key]: value };
-    setSettings(updated);
-    await electronService.updateSettings(updated);
-  };
+    const updated = { ...settings, [key]: value }
+    setSettings(updated)
+    await electronService.updateSettings(updated)
+  }
 
   const themeOptions = [
     { label: 'System', value: 'system' },
     { label: 'Light', value: 'light' },
     { label: 'Dark', value: 'dark' },
-  ];
+  ]
 
   return (
     <div className="flex flex-col h-full bg-background/30 p-4 space-y-4 max-w-lg mx-auto overflow-y-auto custom-scrollbar">
@@ -97,13 +97,11 @@ export const SettingsPage: React.FC = () => {
           </div>
         </CardContent>
         <CardFooter className="pt-2">
-           <p className="text-[10px] text-center w-full text-muted-foreground">
-             © 2026 Electron Menubar Boilerplate
-           </p>
+          <p className="text-[10px] text-center w-full text-muted-foreground">© 2026 Electron Menubar Boilerplate</p>
         </CardFooter>
       </Card>
     </div>
-  );
-};
+  )
+}
 
-export default SettingsPage;
+export default SettingsPage

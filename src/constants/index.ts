@@ -8,7 +8,7 @@ export const APP = {
   name: 'Electron React App',
   version: '1.0.0',
   description: 'Cross-platform Desktop App with Electron and React',
-} as const;
+} as const
 
 /**
  * API configuration
@@ -16,7 +16,7 @@ export const APP = {
 export const API = {
   baseUrl: import.meta.env.VITE_API_URL || '/api',
   timeout: 30000,
-} as const;
+} as const
 
 /**
  * Pagination defaults
@@ -25,7 +25,7 @@ export const PAGINATION = {
   defaultPage: 1,
   defaultPageSize: 20,
   pageSizeOptions: [10, 20, 50, 100],
-} as const;
+} as const
 
 /**
  * Storage keys
@@ -35,7 +35,7 @@ export const STORAGE_KEYS = {
   language: 'app-language',
   authToken: 'auth-token',
   user: 'user-data',
-} as const;
+} as const
 
 /**
  * Route paths
@@ -45,7 +45,7 @@ export const ROUTES = {
   dashboard: '/dashboard',
   settings: '/settings',
   about: '/about',
-} as const;
+} as const
 
 /**
  * Date format options
@@ -56,4 +56,4 @@ export const DATE_FORMATS = {
   long: { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' },
   time: { hour: '2-digit', minute: '2-digit' },
   datetime: { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' },
-} as const;
+} as const

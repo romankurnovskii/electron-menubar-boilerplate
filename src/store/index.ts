@@ -18,4 +18,4 @@
 // Placeholder - add your store exports here
 export const STORE = {
   // Add your store exports here
-} as const;
+} as const

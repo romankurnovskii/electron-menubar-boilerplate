@@ -1,14 +1,14 @@
 // src/components/ui/Slider.tsx
-import React from 'react';
-import { cn } from '@/utils/helpers';
+import React from 'react'
+import { cn } from '@/utils/helpers'
 
 export interface SliderProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  label?: string;
-  description?: string;
-  minLabel?: string;
-  maxLabel?: string;
-  showValue?: boolean;
-  valueDisplay?: (value: number) => string;
+  label?: string
+  description?: string
+  minLabel?: string
+  maxLabel?: string
+  showValue?: boolean
+  valueDisplay?: (value: number) => string
 }
 
 /**
@@ -16,9 +16,9 @@ export interface SliderProps extends Omit<React.InputHTMLAttributes<HTMLInputEle
  */
 export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
   ({ className, label, description, minLabel, maxLabel, showValue = true, valueDisplay, id, value, ...props }, ref) => {
-    const sliderId = id || label?.toLowerCase().replace(/\s+/g, '-');
+    const sliderId = id || label?.toLowerCase().replace(/\s+/g, '-')
 
-    const displayValue = valueDisplay ? valueDisplay(value as number) : value;
+    const displayValue = valueDisplay ? valueDisplay(value as number) : value
 
     return (
       <div className="w-full">
@@ -43,7 +43,7 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
             className={cn(
               'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-300',
               props.disabled && 'opacity-50 cursor-not-allowed',
-              className
+              className,
             )}
             {...props}
           />
@@ -80,10 +80,10 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
         )}
         {description && <p className="mt-1 text-xs text-gray-500">{description}</p>}
       </div>
-    );
-  }
-);
+    )
+  },
+)
 
-Slider.displayName = 'Slider';
+Slider.displayName = 'Slider'
 
-export default Slider;
+export default Slider

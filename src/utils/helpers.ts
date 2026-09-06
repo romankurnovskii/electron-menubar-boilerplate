@@ -7,7 +7,7 @@
  * @returns Combined class string
  */
 export function cn(...inputs: (string | undefined | null | false)[]): string {
-  return inputs.filter(Boolean).join(' ');
+  return inputs.filter(Boolean).join(' ')
 }
 
 /**
@@ -17,8 +17,8 @@ export function cn(...inputs: (string | undefined | null | false)[]): string {
  * @returns Truncated string
  */
 export function truncate(str: string, maxLength: number): string {
-  if (str.length <= maxLength) return str;
-  return str.slice(0, maxLength - 3) + '...';
+  if (str.length <= maxLength) return str
+  return `${str.slice(0, maxLength - 3)}...`
 }
 
 /**
@@ -27,8 +27,8 @@ export function truncate(str: string, maxLength: number): string {
  * @returns Capitalized string
  */
 export function capitalize(str: string): string {
-  if (!str) return '';
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  if (!str) return ''
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 /**
@@ -36,7 +36,7 @@ export function capitalize(str: string): string {
  * @returns Random ID string
  */
 export function generateId(): string {
-  return Math.random().toString(36).substring(2, 9);
+  return Math.random().toString(36).substring(2, 9)
 }
 
 /**
@@ -45,7 +45,7 @@ export function generateId(): string {
  * @returns Promise that resolves after the duration
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 /**
@@ -53,7 +53,7 @@ export function sleep(ms: number): Promise<void> {
  * @returns True if in Electron
  */
 export function isElectron(): boolean {
-  return typeof window !== 'undefined' && !!window.electronAPI;
+  return typeof window !== 'undefined' && !!window.electronAPI
 }
 
 /**
@@ -61,7 +61,7 @@ export function isElectron(): boolean {
  * @returns True if in development
  */
 export function isDev(): boolean {
-  return import.meta.env.DEV;
+  return import.meta.env.DEV
 }
 
 /**
@@ -70,7 +70,7 @@ export function isDev(): boolean {
  * @returns Cloned object
  */
 export function deepClone<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj));
+  return JSON.parse(JSON.stringify(obj))
 }
 
 /**
@@ -82,8 +82,8 @@ export function deepClone<T>(obj: T): T {
 export function getNestedValue<T = unknown>(obj: unknown, path: string): T | undefined {
   return path.split('.').reduce((acc: unknown, part: string) => {
     if (acc && typeof acc === 'object' && part in acc) {
-      return (acc as Record<string, unknown>)[part];
+      return (acc as Record<string, unknown>)[part]
     }
-    return undefined;
-  }, obj) as T | undefined;
+    return undefined
+  }, obj) as T | undefined
 }

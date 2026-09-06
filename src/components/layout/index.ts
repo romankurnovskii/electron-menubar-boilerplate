@@ -16,4 +16,4 @@
 // Placeholder - add your layout components here
 export const LAYOUT_COMPONENTS = {
   // Add your layout component exports here
-} as const;
+} as const

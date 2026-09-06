@@ -17,8 +17,8 @@
 // Placeholder - add your service exports here
 export const SERVICES = {
   // Add your service exports here
-} as const;
+} as const
 
 // Re-export commonly used services
-export { api } from './api';
-export { electronService } from './electron.service';
+export { api } from './api'
+export { electronService } from './electron.service'

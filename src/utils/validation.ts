@@ -7,8 +7,8 @@
  * @returns True if valid email
  */
 export function validateEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
 }
 
 /**
@@ -17,32 +17,29 @@ export function validateEmail(email: string): boolean {
  * @param minLength - Minimum length (default: 8)
  * @returns Validation result
  */
-export function validatePassword(
-  password: string,
-  minLength: number = 8
-): { valid: boolean; errors: string[] } {
-  const errors: string[] = [];
+export function validatePassword(password: string, minLength: number = 8): { valid: boolean; errors: string[] } {
+  const errors: string[] = []
 
   if (password.length < minLength) {
-    errors.push(`Password must be at least ${minLength} characters`);
+    errors.push(`Password must be at least ${minLength} characters`)
   }
 
   if (!/[A-Z]/.test(password)) {
-    errors.push('Password must contain at least one uppercase letter');
+    errors.push('Password must contain at least one uppercase letter')
   }
 
   if (!/[a-z]/.test(password)) {
-    errors.push('Password must contain at least one lowercase letter');
+    errors.push('Password must contain at least one lowercase letter')
   }
 
   if (!/[0-9]/.test(password)) {
-    errors.push('Password must contain at least one number');
+    errors.push('Password must contain at least one number')
   }
 
   return {
     valid: errors.length === 0,
     errors,
-  };
+  }
 }
 
 /**
@@ -52,10 +49,10 @@ export function validatePassword(
  */
 export function validateUrl(url: string): boolean {
   try {
-    new URL(url);
-    return true;
+    new URL(url)
+    return true
   } catch {
-    return false;
+    return false
   }
 }
 
@@ -65,7 +62,7 @@ export function validateUrl(url: string): boolean {
  * @returns True if not empty
  */
 export function validateRequired(value: string): boolean {
-  return value.trim().length > 0;
+  return value.trim().length > 0
 }
 
 /**
@@ -75,7 +72,7 @@ export function validateRequired(value: string): boolean {
  * @returns True if meets minimum
  */
 export function validateMinLength(value: string, min: number): boolean {
-  return value.length >= min;
+  return value.length >= min
 }
 
 /**
@@ -85,5 +82,5 @@ export function validateMinLength(value: string, min: number): boolean {
  * @returns True if meets maximum
  */
 export function validateMaxLength(value: string, max: number): boolean {
-  return value.length <= max;
+  return value.length <= max
 }

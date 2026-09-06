@@ -15,14 +15,18 @@
 // Re-export commonly used types (defined below)
 
 // Common utility types
-export type Nullable<T> = T | null;
-export type Optional<T> = T | undefined;
-export type AsyncReturnType<T extends (...args: unknown[]) => Promise<unknown>> = T extends (...args: unknown[]) => Promise<infer R> ? R : never;
+export type Nullable<T> = T | null
+export type Optional<T> = T | undefined
+export type AsyncReturnType<T extends (...args: unknown[]) => Promise<unknown>> = T extends (
+  ...args: unknown[]
+) => Promise<infer R>
+  ? R
+  : never
 
 /**
  * Electron API exposed to renderer
  */
 export interface ElectronAPI {
-  getAppVersion: () => Promise<string>;
-  getPlatform: () => Promise<string>;
+  getAppVersion: () => Promise<string>
+  getPlatform: () => Promise<string>
 }
